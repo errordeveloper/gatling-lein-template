@@ -1,5 +1,5 @@
 (ns leiningen.new.gatling
-  (:require [lancet.core :as lancet])
+  (:require [clojure.java.io :as io])
   (:use [leiningen.new.templates :only [renderer name-to-path ->files]]))
 
 (def render (renderer "gatling"))
@@ -18,6 +18,6 @@
              ["conf/logback.xml" (render "logback.xml" data)]
              [".gitignore" (render "gitignore" data)]
              ["project.clj" (render "project.clj" data)]))
-  (println "Generated new Gatling load-test boilerplate in" name "directory.")
   (doseq [subdir [ "simulations" "request-bodies" "data" ]]
-    (lancet/mkdir {:dir (format "%s/%s" name subdir)})))
+    (.mkdirs (io/file name subdir)))
+  (println "Generated new Gatling load-test boilerplate in" name "directory."))
